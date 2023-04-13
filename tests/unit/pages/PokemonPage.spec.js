@@ -64,4 +64,32 @@ describe('PokemonPage Component', () =>{
         expect( PokemonPicture.attributes().pokemonid).toEqual("4")
         expect( PokemonOption.attributes().pokemons).toBeDefined()
     })
+
+
+    test('pruebas con checkAnswer', async()=>{
+        const wrapper = shallowMount( PokemonPage, {
+            data() {
+                return {
+                    pokemonArr: pokemons,
+                    pokemon: pokemons[0],
+                    showPokemon: false,
+                    showAnswer: false,
+                    message: "",
+                    life: 4,
+                    score: 0,
+                    finalScore: ""
+                }
+            },
+        } )
+
+        await wrapper.vm.checkAnswer(4)
+        expect( wrapper.find('h3').exists() ).toBeTruthy()
+        console.log( wrapper.find('h3').text() )
+        expect( wrapper.vm.showPokemon ).toBeTruthy()
+        expect( wrapper.find('h3').text() ).toBe(`Correcto era ${pokemons[0].name}!!`)
+
+        await wrapper.vm.checkAnswer(10)
+        expect( wrapper.vm.message ).toBe(`Incorrecto era ${pokemons[0].name} te quedan ${3} vidas!!`)
+
+    })
 })
